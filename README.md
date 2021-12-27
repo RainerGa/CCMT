@@ -7,5 +7,5 @@
 # <p align="center">Installation</p>
 1. Download the files: CCMT/CCMT_SOURCE/Tool[...]
   Cause it is written in Powershell you download always the Sourcecode :-)
-2. Follow the Installation Instructions under "REDME.md" you will found in the Tool[...] Directory
+2. Follow the Installation Instructions under "README.md" you will find in the Tool[...] Directory
 
