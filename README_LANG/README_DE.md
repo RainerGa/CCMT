@@ -1,30 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-<head>
-	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
-	<title></title>
-	<meta name="generator" content="LibreOffice 7.2.0.4 (Windows)"/>
-	<meta name="created" content="2021-12-03T08:59:31.564000000"/>
-	<meta name="changed" content="2021-12-26T15:57:29.842000000"/>
-	<style type="text/css">
-		@page { size: 21cm 29.7cm; margin: 2cm }
-		p { line-height: 115%; margin-bottom: 0.25cm; background: transparent }
-		h1 { margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
-		h1.western { font-family: "Liberation Sans", sans-serif; font-size: 18pt; font-weight: bold }
-		h1.cjk { font-family: "Microsoft YaHei"; font-size: 18pt; font-weight: bold }
-		h1.ctl { font-family: "Arial"; font-size: 18pt; font-weight: bold }
-		h2 { margin-top: 0.35cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
-		h2.western { font-family: "Liberation Sans", sans-serif; font-size: 16pt; font-weight: bold }
-		h2.cjk { font-family: "Microsoft YaHei"; font-size: 16pt; font-weight: bold }
-		h2.ctl { font-family: "Arial"; font-size: 16pt; font-weight: bold }
-		h3 { margin-top: 0.25cm; margin-bottom: 0.21cm; background: transparent; page-break-after: avoid }
-		h3.western { font-family: "Liberation Sans", sans-serif; font-size: 14pt; font-weight: bold }
-		h3.cjk { font-family: "Microsoft YaHei"; font-size: 14pt; font-weight: bold }
-		h3.ctl { font-family: "Arial"; font-size: 14pt; font-weight: bold }
-		a:link { color: #000080; so-language: zxx; text-decoration: underline }
-		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
-	</style>
-</head>
+
 <body lang="de-DE" link="#000080" vlink="#800000" dir="ltr"><h1 class="western">
 Contact Center Minitools (CCMT)</h1>
 <p style="line-height: 100%; margin-bottom: 0cm"><br/>
