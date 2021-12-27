@@ -31,3 +31,8 @@ PC: Means a Windows Computer or a Windows Terminalserver Desktop
 # Usage (Example)
 Please Read the Description for Tool1 of this project! 
 
+# External Dependencies
+Capture2Text
+
+# Environment
+Tested with Windows 10 
