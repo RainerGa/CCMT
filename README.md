@@ -2,5 +2,5 @@
 
 **[Beschreibung](./README_LANG/README_DE.md "Beschreibung")**
 
-**[Description](./README_LANG/README_EN.html "Description")**
+**[Description](./README_LANG/README_EN.md "Description")**
 
