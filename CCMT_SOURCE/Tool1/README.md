@@ -36,3 +36,9 @@ Capture2Text
 
 # Environment
 Tested with Windows 10 
+
+# FAQ
+See FAQ Secion in the Sourcecode of the powershell script: **ccmt_pn2ticket.ps1**
+
+This software is not a "one click and be happy" Solution! You need to be able to open and read the powershell Script.
+There are Sections you need to configure and there are sections you do not need to change.

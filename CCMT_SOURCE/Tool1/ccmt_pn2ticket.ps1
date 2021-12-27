@@ -4,10 +4,10 @@
 #       "custom_script.ps1" is part of this project (to show an example implementation) 
 #
 #       @author:         Rainer G.
-#       @version:        0.1
+#       @version:        0.2
 #
 #       Filename:       ccmt_pn2ticket.ps1
-#                       Means "Contactcenter Mini Tools "Phonenummer to Ticket" resolver"
+#                       Means: Contactcenter Mini Tools "Phonenummer to Ticket" resolver
 #       Environment:
 #                       Windows
 #                           Installationpath:       %APPDATA%\Roaming\ccmtools\
@@ -17,6 +17,10 @@
 #                                                   https://sourceforge.net/projects/capture2text/
 #
 # FAQ:
+#   Q:  What are the steps after installation
+#   A:   1. Start the Script with the "define_scan_area" Parameter 
+#        2. Add the Script to your Desktop (Link) and add an Keyboard Shortcut
+#   ++++++
 #   Q:  What can I do if my ccmt_config.xml File will not be found
 #   A:  Download the File from github there is no routine to create the file clean and new :-()
 #   ++++++
@@ -37,6 +41,9 @@ Param(
 # Debugging Messages Config ("Continue" for activate; "SilentlyContinue" for deactivate)
 $VerbosePreference = "Continue" # SilentlyContinue, Stop, Continue, Inquire, Ignore, Suspend
 
+# Name of the softphone program. This is used to identify the Prozess ID and bring the Window of the Softphone in the foreground
+$softphone_program = "notepad"
+
 # This was not nessecary :-) But is part of this software. Search for this Variable to customize
 $a_phone_number_types = @("+49[0-9]*","0800[0-9]*", "0[0-9]*");
 
@@ -44,6 +51,7 @@ $a_phone_number_types = @("+49[0-9]*","0800[0-9]*", "0[0-9]*");
 # **********************************************************************************************************
 # Global Variables (do not change!)
 # **********************************************************************************************************
+$global:CAPTURE2TEXT_PATH = $env:APPDATA +"\CCMT\Capture2Text";
 $global:PROG_HOME = $env:APPDATA +"\ccmtools";
 $global:CUSTOM_SCRIPT = $PROG_HOME + "\custom_script.ps1";
 $global:CONFIG_FILE = $PROG_HOME + "\ccmt_config.xml"
@@ -149,7 +157,8 @@ function take_screenshot_return_ocr_text {
     # Capture2Text>Capture2Text_CLI.exe --screen-rect "x1 y1 x2 y2"
     $para = $global:MOUSE_FIRST.X.toString() +" "+$global:MOUSE_FIRST.Y.toString() +" "+$global:MOUSE_SECOND.X.toString() +" "+$global:MOUSE_SECOND.Y.toString();
     Write-Verbose $para
-    $ocr_result = & C:\Users\Spielen\Downloads\Capture2Text_v4.6.2_64bit\Capture2Text\Capture2Text_CLI.exe --screen-rect `"$para`"
+    
+    $ocr_result = & "$global:CAPTURE2TEXT_PATH"\Capture2Text\Capture2Text_CLI.exe --screen-rect `"$para`"
     Write-Verbose $ocr_result;
 
     # Analyse the Result and use for this: $a_phone_number_types
@@ -202,6 +211,44 @@ function define_scan_area {
     write_config_file
 }
 
+<#
+Brings the Softphone Client in the Foreground so that OCR scanning will work correct
+
+Be aware of: This works only correct if there ist only ONE Prozess to bring in foreground!!!
+#>
+function bring_softphone_in_foreground {
+    Enum ShowStates
+    {
+      Hide = 0
+      Normal = 1
+      Minimized = 2
+      Maximized = 3
+      ShowNoActivateRecentPosition = 4
+      Show = 5
+      MinimizeActivateNext = 6
+      MinimizeNoActivate = 7
+      ShowNoActivate = 8
+      Restore = 9
+      ShowDefault = 10
+      ForceMinimize = 11
+    }
+    
+    
+    # (see also www.pinvoke.net)
+    $code = '[DllImport("user32.dll")] public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);'
+    
+    # add signature as new type to PowerShell (for this session)
+    $type = Add-Type -MemberDefinition $code -Name myAPI -PassThru
+    
+    # get the process of the Softphone Client
+    $process = Get-Process $softphone_program
+    $hwnd = $process.MainWindowHandle
+    
+    # Shows the Softphone Client
+    $type::ShowWindowAsync($hwnd, [ShowStates]::ShowDefault)
+
+}
+
 
 # **********************************************************************************************************
 # main
@@ -217,6 +264,8 @@ function main {
     Write-Verbose ("Unique Number: "+ $unique_nr);
 
     read_config_file;
+
+    bring_softphone_in_foreground;
     
     $global:SCANNED_TEXT = take_screenshot_return_ocr_text;
 
