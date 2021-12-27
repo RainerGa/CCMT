@@ -4,7 +4,7 @@
 2. Download Capture2Text [Download Link]https://sourceforge.net/projects/capture2text/files/Dictionaries/
 3. go to %APPDATA% and create directory "ccmtools" (Example: C:\Users\[your Username\AppData\Roaming\ccmtools
 4. Extract Capture2Text in this (3.) Directory
-5. Copy customer2ticket.csv an phonenr2customer.csv in the directory (3.)
+5. Copy customer2ticket.csv, ccmt_config.xml an phonenr2customer.csv in the directory (3.)
 
 
 After this steps you should see the following directory structure on your PC:
@@ -14,6 +14,8 @@ After this steps you should see the following directory structure on your PC:
                   /customer2ticket.csv
                   
                   /phonenr2ticket.csv
+                  
+                  /ccmt_config.xml
                   
                   /Capture2Text     (Directory)
                   
