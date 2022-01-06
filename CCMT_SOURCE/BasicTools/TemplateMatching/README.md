@@ -1,9 +1,5 @@
 # <p align="center">Template Matching  (CCMT)</p>
 
-**[Beschreibung](./README_LANG/README_DE.md "Beschreibung")**
-
-**[Description](./README_LANG/README_EN.md "Description")**
-
 # <p align="center">Usage</p>
 1. Download the file: template_matching.jar
 2. Download https://sourceforge.net/projects/opencvlibrary/files/latest/download
