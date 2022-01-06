@@ -35,6 +35,9 @@ Param(
     [switch]$config_mouse_scan_area
 );
 
+# Integrates the "do_work_after_analyse" Function
+. "$PSScriptRoot\custom_script.ps1"
+
 # **********************************************************************************************************
 # Variables (for customication)
 # **********************************************************************************************************
@@ -174,27 +177,9 @@ function take_screenshot_return_ocr_text {
 <#
 Do anything with the analysed data
 In this case, get the Name of a User cause of the calling phonenumber
+do_work_after_analyse -> see custom_script.ps1 
 #>
-function do_work_after_analyse {
-    # open phonenr2customer.csv
-    # search for Customer "Name" and "Vorname" (Surname for english speaking people)
-    $line = Get-Content "$global:PROG_HOME\phonenr2customer.csv" | Where-Object { $_.Contains($global:SCANNED_TEXT) }
 
-    $a_line = $line.split(";");
-    Write-Verbose $a_line[2];
-
-    # open customer2ticket.csv
-    # search the Ticketnr. and use for this "Name" and "Vorname" ($a_line[1] + $a_line[2])
-    $ticket_line = Get-Content "$global:PROG_HOME\customer2ticket.csv" | Where-Object { $_.Contains($a_line[1] +";"+ $a_line[2]) }
-
-    $a_ticket_line = $ticket_line.split(";")
-    Write-Verbose $a_ticket_line[2];
-    $url = "https://youticketsystem.com?egal="+ $a_ticket_line[2]
-
-    # Open Ticket with Ticketnumber in your Ticketsystem
-    # Start-Process ("https://youticketsystem.com&"+ $a_ticket_line[2]);
-    [system.Diagnostics.Process]::Start("msedge",$url)
-}
 
 <#
 Define the area for OCR scanning. And write it in an config file.
@@ -202,10 +187,10 @@ Define the area for OCR scanning. And write it in an config file.
 function define_scan_area {
 
     # ask for mouse Position FIRST
-    read-host “Move your Mouse to Position 1 and press ENTER to continue...”
+    read-host "Move your Mouse to Position 1 and press ENTER to continue..."
     mouse_coordinates
     # ask for mouse Position SECOND
-    read-host “Move your Mouse to Position 2 and press ENTER to continue...”
+    read-host "Move your Mouse to Position 2 and press ENTER to continue..."�
     mouse_coordinates
 
     write_config_file
