@@ -1,6 +1,6 @@
 # <p align="center">Template Matching </p>
 
-# <p align="center">Usage</p>
+# Installation
 1. Download the file: template_matching.jar
 2. Download https://sourceforge.net/projects/opencvlibrary/files/latest/download
 3. Extract the downloaded EXE File with a ZIP Tool (Example: opencv-4.5.5-vc14_vc15.exe) - no installation needed!
