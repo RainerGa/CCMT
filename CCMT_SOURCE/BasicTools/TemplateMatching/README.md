@@ -1,4 +1,4 @@
-# <p align="center">Template Matching  (CCMT)</p>
+# <p align="center">Template Matching </p>
 
 # <p align="center">Usage</p>
 1. Download the file: template_matching.jar
