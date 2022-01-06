@@ -9,8 +9,8 @@
 
 # How to use / Example
 
-`C:\Users\EXAMPLE_USER\CCMT_INSTALL_DIR\java -Djava.library.path="C:\Users\EXAMPLE_USER\CCMT_INSTALL_DIR\lib" -jar template_matching.jar "C:\Testdata\full_screenshot.png" "C:\Testdata\search_for.png"`
-Click X: 520.5, Click Y:241.0 
+`C:\Users\EXAMPLE_USER\CCMT_INSTALL_DIR\java -Djava.library.path="C:\Users\EXAMPLE_USER\CCMT_INSTALL_DIR\lib" -jar template_matching.jar "C:\Testdata\full_screenshot.png" "C:\Testdata\search_for.png"`<br/><br/>Result:
+`Click X: 520.5, Click Y:241.0 `
 
 
 # Environment
