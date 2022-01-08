@@ -1,10 +1,12 @@
+
+
 # **********************************************************************************************************
 #       Contactcenter Mini Tool to resolve Phonenumber to Customer/Ticketnumber or anything else.
 #       The "resolve to" can/needs to be coded by yourself :-)
 #       "custom_script.ps1" is part of this project (to show an example implementation) 
 #
 #       @author:         Rainer G.
-#       @version:        0.2
+#       @version:        0.3
 #
 #       Filename:       ccmt_pn2ticket.ps1
 #                       Means: Contactcenter Mini Tools "Phonenummer to Ticket" resolver
@@ -18,7 +20,7 @@
 #
 # FAQ:
 #   Q:  What are the steps after installation
-#   A:   1. Start the Script with the "define_scan_area" Parameter 
+#   A:   1. Start the Script with Parameter (.\ccmt_pn2ticket.ps1 -config_mouse_scan_area) 
 #        2. Add the Script to your Desktop (Link) and add an Keyboard Shortcut
 #   ++++++
 #   Q:  What can I do if my ccmt_config.xml File will not be found
@@ -34,6 +36,13 @@ Param(
     [Parameter(Mandatory=$False)]
     [switch]$config_mouse_scan_area
 );
+
+# **********************************************************************************************************
+# Load Classes
+# - Set on Script Begin, cause in Powershell 64-bit it needs to be...
+# **********************************************************************************************************
+# Needed to get the Mouse coordinates
+Add-Type -AssemblyName System.Windows.Forms
 
 # Integrates the "do_work_after_analyse" Function
 . "$PSScriptRoot\custom_script.ps1"
@@ -52,9 +61,9 @@ $a_phone_number_types = @("+49[0-9]*","0800[0-9]*", "0[0-9]*");
 
 
 # **********************************************************************************************************
-# Global Variables (do not change!)
+# Global Variables (Change the path variables if you do not follow the install description)
 # **********************************************************************************************************
-$global:CAPTURE2TEXT_PATH = $env:APPDATA +"\CCMT\Capture2Text";
+$global:CAPTURE2TEXT_PATH = $env:APPDATA +"\ccmtools\Capture2Text";
 $global:PROG_HOME = $env:APPDATA +"\ccmtools";
 $global:CUSTOM_SCRIPT = $PROG_HOME + "\custom_script.ps1";
 $global:CONFIG_FILE = $PROG_HOME + "\ccmt_config.xml"
@@ -64,11 +73,7 @@ $unique_nr;             # unique Number for every analysation
 [System.Drawing.Point]$global:MOUSE_SECOND = New-Object -TypeName System.Drawing.Point;       # Mouse Second Coordinate for Screenshot
 
 $global:SCANNED_TEXT;   # Scanned Text per OCR
-# **********************************************************************************************************
-# Load Classes
-# **********************************************************************************************************
-# Needed to get the Mouse coordinates
-Add-Type -AssemblyName System.Windows.Forms
+
 
 # **********************************************************************************************************
 # Functions
@@ -159,10 +164,10 @@ Use Capture2Text to take a screenshot & analyse it with tesseract ocr technique
 function take_screenshot_return_ocr_text {
     # Capture2Text>Capture2Text_CLI.exe --screen-rect "x1 y1 x2 y2"
     $para = $global:MOUSE_FIRST.X.toString() +" "+$global:MOUSE_FIRST.Y.toString() +" "+$global:MOUSE_SECOND.X.toString() +" "+$global:MOUSE_SECOND.Y.toString();
-    Write-Verbose $para
+    Write-Verbose ("XY Parameter:"+ $para);
     
-    $ocr_result = & "$global:CAPTURE2TEXT_PATH"\Capture2Text\Capture2Text_CLI.exe --screen-rect `"$para`"
-    Write-Verbose $ocr_result;
+    $ocr_result = & "$global:CAPTURE2TEXT_PATH\Capture2Text_CLI.exe" --screen-rect `"$para`"
+    Write-Verbose ("OCR Scan Result:"+ $ocr_result);
 
     # Analyse the Result and use for this: $a_phone_number_types
     # Remove "/", " "
@@ -190,7 +195,7 @@ function define_scan_area {
     read-host "Move your Mouse to Position 1 and press ENTER to continue..."
     mouse_coordinates
     # ask for mouse Position SECOND
-    read-host "Move your Mouse to Position 2 and press ENTER to continue..."ù
+    read-host "Move your Mouse to Position 2 and press ENTER to continue..."ÔøΩ
     mouse_coordinates
 
     write_config_file

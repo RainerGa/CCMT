@@ -32,6 +32,12 @@ function do_work_after_analyse {
     # search for Customer "Name" and "Vorname" (Surname for english speaking people)
     $line = Get-Content "$global:PROG_HOME\phonenr2customer.csv" | Where-Object { $_.Contains($global:SCANNED_TEXT) }
 
+    if ([string]::IsNullOrWhitespace($line)) {
+      # Nothing found stop Working
+      Write-Verbose "Nothing found, working will stop"
+      return;
+    }
+
     $a_line = $line.split(";");
     Write-Verbose $a_line[2];
 
