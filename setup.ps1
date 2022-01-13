@@ -7,6 +7,7 @@
     This script installs the Toolset CCMT or Parts of it to a specified Location
 
     .PARAMETER Location
+    Mandatory
     Specifies the Install Location.
     Default = C:\Users[your Username]\AppData\Roaming\ccmtools
 
@@ -29,13 +30,13 @@
 #>
 #---------------------------------------------------------[Script Parameters]------------------------------------------------------
 Param (
-    [string]$Location
+    [parameter(Mandatory=$true)][string]$Location
 )
 #---------------------------------------------------------[Initialisations]--------------------------------------------------------
 #Set Error Action to Silently Continue
 ErrorActionPreference = 'SilentlyContinue'
 #Import Modules & Snap-ins
-Import-Module PSLogging
+Import-Module .\test.ps1
 #----------------------------------------------------------[Declarations]----------------------------------------------------------
 #Script Version
 sScriptVersion = '1.0'
@@ -45,16 +46,56 @@ sLogName = 'setupccmt.log'
 sLogFile = Join-Path -Path $sLogPath -ChildPath $sLogName
 
 #-----------------------------------------------------------[Functions]------------------------------------------------------------
-
+function setuplogging {
+    [CmdletBinding()]
+    param ($Destination)
+    
+    begin {
+        $Location = Get-Location
+        $LoggingLocation = @("PSLogging.ps1", "CCMT_SOURCE\Logging\PSLogging.ps1")
+    }
+    
+    process {
+        try {
+            foreach ($item in $LoggingLocation) {
+                $completepath = Join-Path -Path $Location -ChildPath $item
+                if (Test-Path -Path $completepath) {
+                    Import-Module $completepath
+                    $a = $true
+                }
+                if (not $a) {
+                    $DestFather = Split-Path -Path $Destination -Parent
+                    $LogDestination = Join-Path -Path $DestFather -ChildPath "CCMT_SOURCE\Logging\PSLogging.ps1"
+                    Invoke-WebRequest "https://raw.githubusercontent.com/RainerGa/CCMT/main/CCMT_SOURCE/Logging/PSLogging.ps1" -OutFile $LogDestination
+                }
+            }
+        }
+        catch {
+            Write-Host "Fehler beim runterladen des Logging Modules"
+            $host.exit(1)
+        }
+    }
+    
+    end {
+        Import-Module $LogDestination
+    }
+}
 Function setup {
     Param ($Location)
     Begin {
         Write-LogInfo -LogPath $sLogFile -Message "Installation started"
         testdirectory -installPath $Location
+        $url = "https://github.com/RainerGa/CCMT/archive/main.zip"
+        $parentlocation = Split-Path -Path $Location -Parent
+        $output = Join-Path -Path $parentlocation -ChildPath "\main.zip"
+        $OpenCV = "https://github.com/opencv/opencv/releases/download/4.5.5/opencv-4.5.5-vc14_vc15.exe"
     }
     Process {
         Try {
-            
+            Write-LogInfo -LogPath $sLogFile -Message "Downloading Archive from GitHub"
+            Invoke-WebRequest -Uri $url -OutFile $output
+            Write-LogInfo -LogPath $sLogFile -Message "Extracting Archive" 
+            Expand-Archive -Path $output -DestinationPath $Location 
         }
         Catch {
             Write-LogError -LogPath $sLogFile -Message _.Exception -ExitGracefully
@@ -69,29 +110,6 @@ Function setup {
     }
 }
 
-function downloadGit {
-    [CmdletBinding(SupportsShouldProcess)]
-    param (
-        [string]$Location
-    )
-    
-    begin {
-        $gitreq = Invoke-WebRequest -Uri https://raw.githubusercontent.com/RainerGa/CCMT/master/README.md
-        if ($gitreq.status -match "[2]\d\d") {
-            
-        }
-    }
-    
-    process {
-        
-    }
-    
-    end {
-        
-    }
-}
-
-
 
 function testdirectory 
 {
@@ -102,17 +120,20 @@ function testdirectory
     )
     
     begin {
-        Write-LogInfo -LogPath $sLogFile -Message "Checking Location: $Location"
+        Write-LogInfo -LogPath $sLogFile -Message "Checking Location: $installPath"
+        if ($installPath -match "\.") {
+            $installPath = Split-Path -Path $installPath
+        }
     }
     
     process {
         Try {
-           if (Test-Path -Path $Location -IsValid) {
+           if (Test-Path -Path $installPath -IsValid) {
                 Write-LogInfo -LogPath $sLogFile -Message "Path is valid"
-                if (not Test-Path -Path $Location) {
+                if (not Test-Path -Path $installPath) {
                     Write-LogInfo -LogPath $sLogFile -Message "Path does not yet exist fully, creating the missing folder(s)"
                     Write-Host "Creating Missing Directorys"
-                    New-Item -Path $Location -ItemType Directory
+                    New-Item -Path $installPath -ItemType Directory
                     return 0
                 }
                 else {
@@ -134,9 +155,9 @@ function testdirectory
                 # Action based on the choice
                 switch($Choice)
                 {
-                    0 { $Location = Read-Host "Please enter new Location: "
-                        Write-LogInfo -LogPath $sLogFile -Message "Entered new Path: $Location"
-                        testdirectory($Location)
+                    0 { $installPath = Read-Host "Please enter new Location: "
+                        Write-LogInfo -LogPath $sLogFile -Message "Entered new Path: $installPath"
+                        testdirectory($installPath)
                         break}
                     1 { Write-Host "No - exiting Program"
                         Write-LogInfo -LogPath $sLogFile -Message "Exiting Program"
@@ -161,5 +182,8 @@ function testdirectory
 
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 Start-Log -LogPath sLogPath -LogName sLogName -ScriptVersion sScriptVersion
+setuplogging
+setup($Location)
+
 #Script Execution goes here
 Stop-Log -LogPath sLogFile
