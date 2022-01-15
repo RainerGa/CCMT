@@ -1,9 +1,9 @@
 # CCMT Security 
-We take security very seriously at Discourse. We welcome any peer review of the tools.
+We take security very seriously at CCMT. We welcome any peer review of the tools.
 
 ## Supported Versions
 
-The following Version are productive Releases.
+The following Versions are productive Releases.
 Be aware of "Supported" means only, that the developers recommend this version for productive use.
 And you can report issues to productive releases. Not for Development Versions/Branches
 
