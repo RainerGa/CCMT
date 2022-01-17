@@ -12,11 +12,7 @@
 #                       Means: Contactcenter Mini Tools "Phonenummer to Ticket" resolver
 #       Environment:
 #                       Windows
-#                           Installationpath:       %APPDATA%\Roaming\ccmtools\
-#                           Configfile:             ccmt_config.xml
-#                           Custom Run Script:      custom_script.ps1 (used if present)
-#                           external Software!:     Installationspath\Capture2Text
-#                                                   https://sourceforge.net/projects/capture2text/
+#                       Details see: https://github.com/RainerGa/CCMT/tree/main/CCMT_SOURCE/Tool1
 #
 # FAQ:
 #   Q:  What are the steps after installation
@@ -28,7 +24,7 @@
 #   ++++++
 #   Q:  The Software does not work if one of the coordinates is "x=0,Y=0" (Left Corner of your screen)
 #   A:  The Method ".isEmpty" of the Class System.Drawing.Point does return a TRUE.
-#       Move your Mouse little bit in one direction. So x or y is not "0" anymore.
+#       Move your Mouse little bit in one direction. So x or y is not "0" anymore. (or edit ccmt_config.xml manual)
 # **********************************************************************************************************
 # Program Parameters
 Param(

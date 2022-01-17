@@ -1,10 +1,12 @@
 # <p align="center">Install Instruction</p>
 
-1. Download all Files of this Directory (Tool[...]) and copy the files to a Location on your PC*
-2. Download Capture2Text: https://sourceforge.net/projects/capture2text/files/Dictionaries/
-3. go to %APPDATA% and create directory "ccmtools" (Example: C:\Users\[your Username]\AppData\Roaming\ccmtools
-4. Extract Capture2Text in this (3.) Directory
-5. Copy customer2ticket.csv, ccmt_config.xml an phonenr2customer.csv in the directory (3.)
+1. Download a productive release of CCMT, and extract the ZIP in a separate folder on your PC*
+   1. Create an Installation Directory (Example: C:\Users\[your Username]\CCMT)
+   2. copy ccmt_pn2ticket.ps1, functions.ps1 in this (2.) Directory
+2. go to %APPDATA% and create directory "ccmtools" (Example: C:\Users\[your Username]\AppData\Roaming\ccmtools
+   1. Download Capture2Text: https://sourceforge.net/projects/capture2text/files/Dictionaries/
+   2. Extract Capture2Text in this (3.) Directory
+   3. Copy customer2ticket.csv, ccmt_config.xml an phonenr2customer.csv in the directory (3.)
 
 
 After this steps you should see the following directory structure on your PC:
@@ -31,6 +33,7 @@ After this steps you should see the following directory structure on your PC:
 `[your Directory Location]`
 
                 ccmt_pn2ticket.ps1
+                functions.ps1
 
 PC: Means a Windows Computer or a Windows Terminalserver Desktop
 
