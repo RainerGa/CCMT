@@ -53,10 +53,10 @@ Parameter 1: buttontype = left, middle, right
 
 returns nothing
 
-This Code is copied from
+This Code is a copy from
 https://social.technet.microsoft.com/Forums/windowsserver/de-DE/1f89491b-0c0d-48d0-874c-97ca96127a8e/script-using-windows-powershell-ise-to-move-mouse-and-control-keyboard?forum=winserverpowershell
 #>
-function Click-MouseButton {
+function click_mousebutton {
     param(
         [string]$Button,
         [switch]$help)
