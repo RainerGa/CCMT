@@ -11,6 +11,9 @@
 #                       Windows
 #                           Installationpath:       [Installation Directory]
 #
+#       Returns:
+#                  Class Object "Coordinates"
+#
 #                           
 # FAQ:
 #   Q:  Usage
@@ -26,6 +29,18 @@
 # Original Code from:
 # https://www.linkedin.com/pulse/powershell-scripting-ui-screenshot-automation-sergey-astrakhantsev
 Add-Type -AssemblyName System.Windows.Forms
+
+class Coordinates {
+
+    [int] $left_x_coordinate;
+    [int] $left_y_coordinate;
+    [int] $right_x_coordinate;
+    [int] $right_y_coordinate;
+
+}
+
+# Global Variable
+$global:COORDINATES = [Coordinates]::new();
 
 $screen_marking_form = [System.Windows.Forms.Form]::new()                              
 $screen_marking_form.WindowState = "Normal"                                            #redefine window to avoid min and max states as non-resizeable
@@ -89,10 +104,13 @@ $screen_marking_form.Add_MouseLeave({
 $screen_marking_form.Add_MouseuP({
         #on releasing Left_MB set capture flag and close window
         if ($_.Button -eq [System.Windows.Forms.MouseButtons]::Left) {
-            Write-host $screen_marking_form.Height
-            Write-host $screen_marking_form.Width
-            Write-host $screen_marking_form.DesktopLocation.X
-            Write-host $screen_marking_form.DesktopLocation.Y
+
+            
+            $global:COORDINATES.left_x_coordinate = $screen_marking_form.DesktopLocation.X;
+            $global:COORDINATES.left_y_coordinate = $screen_marking_form.DesktopLocation.Y;
+            $global:COORDINATES.right_x_coordinate = $screen_marking_form.DesktopLocation.X+$screen_marking_form.Height;
+            $global:COORDINATES.right_y_coordinate = $screen_marking_form.DesktopLocation.Y+$screen_marking_form.Width;
+            
             $screen_marking_form.Close() 
         }
     })

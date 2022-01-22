@@ -33,6 +33,8 @@ Param(
     [switch]$config_mouse_scan_area
 );
 
+Write-Host ("1")
+
 # **********************************************************************************************************
 # Load Classes
 # - Set on Script Begin, cause in Powershell 64-bit it needs to be...
@@ -41,7 +43,7 @@ Param(
 Add-Type -AssemblyName System.Windows.Forms
 
 # Integrates the "do_work_after_analyse" Function
-. "$PSScriptRoot\custom_script.ps1"
+# . "$PSScriptRoot\custom_script.ps1"
 
 # **********************************************************************************************************
 # Variables (for customication)
@@ -62,44 +64,18 @@ $a_phone_number_types = @("+49[0-9]*","0800[0-9]*", "0[0-9]*");
 $global:CAPTURE2TEXT_PATH = $env:APPDATA +"\ccmtools\Capture2Text";
 $global:PROG_HOME = $env:APPDATA +"\ccmtools";
 $global:CUSTOM_SCRIPT = $PROG_HOME + "\custom_script.ps1";
-$global:CONFIG_FILE = $PROG_HOME + "\ccmt_config.xml"
+$global:CONFIG_FILE = $PROG_HOME + "\ccmt_config.xml";
+# If this Variable is not set to = "" there is a error output: <Error>
+$global:SCANNED_TEXT = "";
 
 $unique_nr;             # unique Number for every analysation
+
 [System.Drawing.Point]$global:MOUSE_FIRST = New-Object -TypeName System.Drawing.Point;       # Mouse First Coordinate for Screenshot
 [System.Drawing.Point]$global:MOUSE_SECOND = New-Object -TypeName System.Drawing.Point;       # Mouse Second Coordinate for Screenshot
-
-$global:SCANNED_TEXT;   # Scanned Text per OCR
-
 
 # **********************************************************************************************************
 # Functions
 # **********************************************************************************************************
-<#
-Save Mouse Coordinates in the Script Variables (Object Type: System.Drawing.Size)
-#>
-function mouse_coordinates {
-    $CurrentPosition = [System.Windows.Forms.Cursor]::Position
-    if (($CurrentPosition.X -eq 0) -and ($CurrentPosition -eq 0)) {
-        Write-Verbose ("ERROR: Your Mouse Postition can not be 0 for X an Y axis!");
-        exit 1;
-    }
-    
-
-    If ($global:MOUSE_FIRST.IsEmpty) {
-        [System.Drawing.Point]$global:MOUSE_FIRST = New-Object -TypeName System.Drawing.Point;
-        Write-Verbose ("Mouse FIRST Variable is not set! "+ $CurrentPosition);
-        $global:MOUSE_FIRST = $CurrentPosition;
-        return;
-    }
-
-    if ($global:MOUSE_SECOND.IsEmpty) {
-        [System.Drawing.Point]$global:MOUSE_SECOND = New-Object -TypeName System.Drawing.Point;
-        Write-Verbose ("Mouse SECOND Variable is not set! "+ $CurrentPosition);
-        $global:MOUSE_SECOND = $CurrentPosition;
-        return;
-    }
-}
-
 <#
 Write XML Config File ($CONFIG_FILE)
 #>
@@ -113,12 +89,11 @@ function write_config_file {
         Write-Verbose "XML can not be found for writing. Please see FAQ in Sourcecode to get hints."
     }
 
-    Write-Verbose ("X: "+ $global:MOUSE_FIRST);
-    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.first_point.x = $global:MOUSE_FIRST.X.ToString();
-    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.first_point.y = $global:MOUSE_FIRST.Y.ToString();
+    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.first_point.x = $global:COORDINATES.left_x_coordinate.ToString();
+    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.first_point.y = $global:COORDINATES.left_y_coordinate.ToString();
 
-    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.second_point.x = $global:MOUSE_SECOND.X.ToString();
-    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.second_point.y = $global:MOUSE_SECOND.Y.ToString();
+    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.second_point.x = $global:COORDINATES.right_x_coordinate.ToString();
+    $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.second_point.y = $global:COORDINATES.right_y_coordinate.ToString();
 
     $xmlDoc.Save($global:CONFIG_FILE);
 }
@@ -135,7 +110,6 @@ function read_config_file {
     } catch {
         Write-Verbose "XML can not be found for reading. Please see FAQ in Sourcecode to get hints."
     }
-
 
     $global:MOUSE_FIRST.X = $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.first_point.x;
     $global:MOUSE_FIRST.Y = $xmlDoc.ccmt.pn2ticket.coordinates_of_rectangle.first_point.y;
@@ -181,22 +155,6 @@ In this case, get the Name of a User cause of the calling phonenumber
 do_work_after_analyse -> see custom_script.ps1 
 #>
 
-
-<#
-Define the area for OCR scanning. And write it in an config file.
-#>
-function define_scan_area {
-
-    # ask for mouse Position FIRST
-    read-host "Move your Mouse to Position 1 and press ENTER to continue..."
-    mouse_coordinates
-    # ask for mouse Position SECOND
-    read-host "Move your Mouse to Position 2 and press ENTER to continue..."�
-    mouse_coordinates
-
-    write_config_file
-}
-
 <#
 Brings the Softphone Client in the Foreground so that OCR scanning will work correct
 
@@ -240,8 +198,12 @@ function bring_softphone_in_foreground {
 # main
 # **********************************************************************************************************
 function main {
+    Write-Host ("2")
     if ($config_mouse_scan_area) {
-        define_scan_area
+        Write-Host ("Select the screen area you want to scan (with your mouse)")
+        .\ScreenMarkingCustom.ps1
+        write_config_file
+        Write-Host ("Config Informations written to $global:CONFIG_FILE");
         exit;
     }
 
