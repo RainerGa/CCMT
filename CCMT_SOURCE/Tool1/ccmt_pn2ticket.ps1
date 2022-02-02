@@ -1,5 +1,3 @@
-
-
 # **********************************************************************************************************
 #       Contactcenter Mini Tool to resolve Phonenumber to Customer/Ticketnumber or anything else.
 #       The "resolve to" can/needs to be coded by yourself :-)
@@ -54,17 +52,17 @@ $VerbosePreference = "Continue" # SilentlyContinue, Stop, Continue, Inquire, Ign
 # Name of the softphone program. This is used to identify the Prozess ID and bring the Window of the Softphone in the foreground
 $softphone_program = "notepad"
 
-# This was not nessecary :-) But is part of this software. Search for this Variable to customize
+# This was not nessecary :-) But is part of this software
 $a_phone_number_types = @("+49[0-9]*","0800[0-9]*", "0[0-9]*");
 
 
 # **********************************************************************************************************
 # Global Variables (Change the path variables if you do not follow the install description)
 # **********************************************************************************************************
-$global:CAPTURE2TEXT_PATH = $env:APPDATA +"\ccmtools\Capture2Text";
 $global:PROG_HOME = $env:APPDATA +"\ccmtools";
-$global:CUSTOM_SCRIPT = $PROG_HOME + "\custom_script.ps1";
-$global:CONFIG_FILE = $PROG_HOME + "\ccmt_config.xml";
+$global:CAPTURE2TEXT_PATH = $global:PROG_HOME +"\Capture2Text";
+$global:CUSTOM_SCRIPT = $global:PROG_HOME + "\custom_script.ps1";
+$global:CONFIG_FILE = $global:PROG_HOME + "\ccmt_config.xml";
 # If this Variable is not set to = "" there is a error output: <Error>
 $global:SCANNED_TEXT = "";
 

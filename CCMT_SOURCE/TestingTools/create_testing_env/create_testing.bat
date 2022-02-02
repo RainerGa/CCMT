@@ -2,7 +2,7 @@ REM Description
 REM 
 REM This is a really simple solution to build a test environment out of the Download of a CCMT release
 REM It is NOT a full installation solution! There is NO Error Handling!
-REM Config files in %APPDATA\ccmtools will not be deleted or overwritten
+REM Config files in %APPDATA\ccmtools will not be deleted or overwritten but the folder will be created if it is not present.
 REM 
 REM
 REM       Author: RainerGa
@@ -30,3 +30,4 @@ copy ..\..\TestingTools\UCClientGUI\bin\*.* %HOMEPATH%\CCMT\
 
 
 echo "Download manually Capture2Text and copy it to %APPDATA%\ccmtools\, see documentation!"
+echo "Copy Config Files, see "README.md" in the Tool[0-9]* folder(s)
