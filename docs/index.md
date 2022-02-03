@@ -1,7 +1,7 @@
 <html>
 
 <body lang="de-DE" dir="ltr"><h1 class="western">Contact Center
-Minitools (CCMT) -TEST-</h1>
+Minitools (CCMT)</h1>
 <p style="line-height: 100%; margin-bottom: 0cm"><br/>
 
 </p>
